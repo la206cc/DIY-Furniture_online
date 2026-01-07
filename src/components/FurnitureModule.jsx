@@ -63,31 +63,18 @@ const FurnitureModule = ({ id, type, position, rotation, material, isSelected, o
         [0, 0, size[2] / 2 + 0.1],
         [0, 0, -size[2] / 2 - 0.1]
       ].map((pos, index) => (
-        <group key={index} position={pos}>
-          {/* 连接点 */}
-          <mesh
-            onClick={(e) => handleConnectionPointClick(e, connectionDirections[index])}
-          >
-            <sphereGeometry args={[0.1]} />
-            <meshStandardMaterial 
-              color={isSelected ? '#FF0000' : '#00FF00'}
-              transparent
-              opacity={0.8}
-            />
-          </mesh>
-          {/* 选中时显示柜子预览模型 */}
-          {isSelected && (
-            <mesh>
-              <boxGeometry args={[1, 1, 1]} />
-              <meshStandardMaterial
-                color={materialProps.color}
-                transparent
-                opacity={0.3}
-                wireframe
-              />
-            </mesh>
-          )}
-        </group>
+        <mesh 
+          key={index} 
+          position={pos}
+          onClick={(e) => handleConnectionPointClick(e, connectionDirections[index])}
+        >
+          <sphereGeometry args={[0.1]} />
+          <meshStandardMaterial 
+            color={isSelected ? '#FF0000' : '#00FF00'}
+            transparent
+            opacity={0.8}
+          />
+        </mesh>
       ))}
     </group>
   );
