@@ -49,6 +49,11 @@ const FurnitureConfigurator = () => {
     setSelectedModule(null);
   };
 
+  // 取消物体选择
+  const handleDeselect = () => {
+    setSelectedModule(null);
+  };
+
   // 3D空间中的连接点点击处理
   const handleConnectionPointClick = (baseModuleId, direction) => {
     const baseModule = modules.find(m => m.id === baseModuleId);
@@ -107,6 +112,21 @@ const FurnitureConfigurator = () => {
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 10]} intensity={1} castShadow />
           <Grid args={[10, 10]} />
+          
+          {/* 背景平面，用于接收点击事件取消物体选择 */}
+          <mesh
+            position={[0, 0, 0]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            onClick={handleDeselect}
+          >
+            <planeGeometry args={[50, 50]} />
+            <meshStandardMaterial 
+              color="transparent" 
+              transparent
+              opacity={0}
+              depthTest={false}
+            />
+          </mesh>
           
           {modules.map(module => (
             <FurnitureModule
