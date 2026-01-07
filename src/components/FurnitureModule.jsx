@@ -5,7 +5,7 @@ const FurnitureModule = ({ id, type, position, rotation, material, isSelected, o
 
   // 材质配置
   const materials = {
-    metal: { color: '#C0C0C0', metalness: 0.8, roughness: 0.2 },
+    metal: { color: '#888888', metalness: 0.6, roughness: 0.4 },
     wood: { color: '#8B4513', metalness: 0.1, roughness: 0.8 },
     plastic: { color: '#4682B4', metalness: 0, roughness: 0.5 }
   };

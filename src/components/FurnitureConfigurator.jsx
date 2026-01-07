@@ -20,7 +20,7 @@ const FurnitureConfigurator = () => {
   const [modules, setModules] = useState(initialModules);
   const [selectedModule, setSelectedModule] = useState(null);
   const [currentMaterial, setCurrentMaterial] = useState('metal');
-  const [selectedComponentType, setSelectedComponentType] = useState('shelf');
+  const [selectedComponentType, setSelectedComponentType] = useState('cabinet');
   // 用于区分点击和拖动的状态
   const [isDragging, setIsDragging] = useState(false);
   const [mouseStart, setMouseStart] = useState({ x: 0, y: 0 });
