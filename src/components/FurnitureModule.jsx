@@ -69,7 +69,7 @@ const FurnitureModule = ({ id, type, position, rotation, material, isSelected, o
           position={pos}
           onClick={(e) => handleConnectionPointClick(e, connectionDirections[index])}
         >
-          <sphereGeometry args={[0.05]} />
+          <sphereGeometry args={[0.1]} />
           <meshStandardMaterial 
             color={isSelected ? '#FF0000' : '#00FF00'}
             transparent
