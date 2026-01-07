@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ControlPanel = ({ onAddModule, currentMaterial, onMaterialChange, selectedModule, onRemoveModule, selectedComponentType, onComponentTypeChange, onReset }) => {
+const ControlPanel = ({ onAddModule, currentMaterial, onMaterialChange, selectedModule, onRemoveModule, selectedComponentType, onComponentTypeChange, onReset, sizeOptions, currentDimensions, onDimensionsChange }) => {
   return (
     <div style={{
       width: '20%',
@@ -68,6 +68,78 @@ const ControlPanel = ({ onAddModule, currentMaterial, onMaterialChange, selected
               {material === 'metal' ? '金属' : material === 'wood' ? '木材' : '塑料'}
             </button>
           ))}
+        </div>
+      </div>
+      
+      {/* 尺寸选择区域 */}
+      <div style={{ marginBottom: '20px' }}>
+        {/* 深度选择 */}
+        <div style={{ marginBottom: '15px' }}>
+          <h3>深度 mm</h3>
+          <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+            {sizeOptions?.depth?.map((depth) => (
+              <button
+                key={depth}
+                onClick={() => onDimensionsChange({ ...currentDimensions, depth })}
+                style={{
+                  ...buttonStyle,
+                  backgroundColor: currentDimensions?.depth === depth ? '#000' : '#fff',
+                  color: currentDimensions?.depth === depth ? '#fff' : '#000',
+                  minWidth: '80px',
+                  padding: '8px 12px',
+                  fontSize: '14px'
+                }}
+              >
+                {depth}
+              </button>
+            ))}
+          </div>
+        </div>
+        
+        {/* 高度选择 */}
+        <div style={{ marginBottom: '15px' }}>
+          <h3>高度 mm</h3>
+          <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+            {sizeOptions?.height?.map((height) => (
+              <button
+                key={height}
+                onClick={() => onDimensionsChange({ ...currentDimensions, height })}
+                style={{
+                  ...buttonStyle,
+                  backgroundColor: currentDimensions?.height === height ? '#000' : '#fff',
+                  color: currentDimensions?.height === height ? '#fff' : '#000',
+                  minWidth: '60px',
+                  padding: '8px 12px',
+                  fontSize: '14px'
+                }}
+              >
+                {height}
+              </button>
+            ))}
+          </div>
+        </div>
+        
+        {/* 宽度选择 */}
+        <div style={{ marginBottom: '15px' }}>
+          <h3>宽度 mm</h3>
+          <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+            {sizeOptions?.width?.map((width) => (
+              <button
+                key={width}
+                onClick={() => onDimensionsChange({ ...currentDimensions, width })}
+                style={{
+                  ...buttonStyle,
+                  backgroundColor: currentDimensions?.width === width ? '#000' : '#fff',
+                  color: currentDimensions?.width === width ? '#fff' : '#000',
+                  minWidth: '60px',
+                  padding: '8px 12px',
+                  fontSize: '14px'
+                }}
+              >
+                {width}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
       

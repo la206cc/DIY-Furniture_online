@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-const FurnitureModule = ({ id, type, position, rotation, material, isSelected, onSelect, onUpdate, onRemove, onConnectionPointClick, isDragging }) => {
+const FurnitureModule = ({ id, type, position, rotation, material, isSelected, onSelect, onUpdate, onRemove, onConnectionPointClick, isDragging, dimensions }) => {
   const ref = useRef();
 
   // 材质配置
@@ -10,12 +10,20 @@ const FurnitureModule = ({ id, type, position, rotation, material, isSelected, o
     plastic: { color: '#4682B4', metalness: 0, roughness: 0.5 }
   };
 
-  // 模块尺寸配置
-  const moduleSizes = {
-    cabinet: [1, 1, 1]
+  // 将mm转换为3D场景单位（1单位=1m）
+  const getSize = () => {
+    if (dimensions) {
+      // 将mm转换为m（除以1000）
+      return [
+        dimensions.width / 1000,
+        dimensions.height / 1000,
+        dimensions.depth / 1000
+      ];
+    }
+    return [1, 1, 1];
   };
 
-  const size = moduleSizes[type] || [1, 1, 1];
+  const size = getSize();
   const materialProps = materials[material] || materials.metal;
 
   // 连接点方向映射

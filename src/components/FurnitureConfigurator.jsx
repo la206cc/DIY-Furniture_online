@@ -11,9 +11,17 @@ const initialModules = [
     type: 'cabinet',
     position: [0, 0, 0],
     rotation: [0, 0, 0],
-    material: 'metal'
+    material: 'metal',
+    dimensions: { width: 750, height: 350, depth: 350 }
   }
 ];
+
+// 尺寸选项配置
+const sizeOptions = {
+  depth: [250, 350, 500],
+  height: [100, 175, 250, 350, 395, 500],
+  width: [250, 350, 395, 500, 750]
+};
 
 const FurnitureConfigurator = () => {
   // 初始状态：添加一个基础柜子组件
@@ -21,6 +29,8 @@ const FurnitureConfigurator = () => {
   const [selectedModule, setSelectedModule] = useState(null);
   const [currentMaterial, setCurrentMaterial] = useState('metal');
   const [selectedComponentType, setSelectedComponentType] = useState('cabinet');
+  // 尺寸选择状态
+  const [currentDimensions, setCurrentDimensions] = useState({ width: 750, height: 350, depth: 350 });
   // 用于区分点击和拖动的状态
   const [isDragging, setIsDragging] = useState(false);
   const [mouseStart, setMouseStart] = useState({ x: 0, y: 0 });
@@ -49,7 +59,8 @@ const FurnitureConfigurator = () => {
       type,
       position,
       rotation: [0, 0, 0],
-      material: currentMaterial
+      material: currentMaterial,
+      dimensions: { ...currentDimensions }
     };
     setModules([...modules, newModule]);
   };
@@ -75,6 +86,11 @@ const FurnitureConfigurator = () => {
     if (!isDragging) {
       setSelectedModule(null);
     }
+  };
+
+  // 处理尺寸变化
+  const handleDimensionsChange = (newDimensions) => {
+    setCurrentDimensions(newDimensions);
   };
 
   // 3D空间中的连接点点击处理
@@ -159,6 +175,7 @@ const FurnitureConfigurator = () => {
               position={module.position}
               rotation={module.rotation}
               material={module.material}
+              dimensions={module.dimensions}
               isSelected={selectedModule === module.id}
               onSelect={() => !isDragging && setSelectedModule(module.id)}
               onUpdate={updates => updateModule(module.id, updates)}
@@ -178,6 +195,9 @@ const FurnitureConfigurator = () => {
         selectedComponentType={selectedComponentType}
         onComponentTypeChange={setSelectedComponentType}
         onReset={resetToInitialState}
+        sizeOptions={sizeOptions}
+        currentDimensions={currentDimensions}
+        onDimensionsChange={handleDimensionsChange}
       />
     </div>
   );
