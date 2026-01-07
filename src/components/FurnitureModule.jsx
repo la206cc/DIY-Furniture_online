@@ -1,14 +1,7 @@
 import React, { useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { useBox } from '@react-three/cannon';
 
-const FurnitureModule = ({ id, type, position, rotation, material, isSelected, onSelect, onUpdate, onRemove }) => {
+const FurnitureModule = ({ id, type, position, rotation, material, isSelected, onSelect, onUpdate, onRemove, onConnectionPointClick }) => {
   const ref = useRef();
-  const [boxRef] = useBox(() => ({
-    mass: 0,
-    position,
-    rotation
-  }));
 
   // 材质配置
   const materials = {
@@ -28,14 +21,20 @@ const FurnitureModule = ({ id, type, position, rotation, material, isSelected, o
   const size = moduleSizes[type] || [1, 1, 1];
   const materialProps = materials[material] || materials.metal;
 
+  // 连接点方向映射
+  const connectionDirections = [
+    'right', 'left', 'top', 'bottom', 'front', 'back'
+  ];
+
   // 鼠标交互
   const handleClick = (e) => {
     e.stopPropagation();
     onSelect();
   };
 
-  const handleDrag = (e) => {
-    // 拖拽逻辑可以在这里实现
+  const handleConnectionPointClick = (e, direction) => {
+    e.stopPropagation();
+    onConnectionPointClick(direction);
   };
 
   return (
@@ -44,10 +43,8 @@ const FurnitureModule = ({ id, type, position, rotation, material, isSelected, o
       position={position}
       rotation={rotation}
       onClick={handleClick}
-      onPointerMove={handleDrag}
     >
       <mesh
-        ref={boxRef}
         castShadow
         receiveShadow
         material={{
@@ -58,7 +55,7 @@ const FurnitureModule = ({ id, type, position, rotation, material, isSelected, o
       >
         <boxGeometry args={size} />
       </mesh>
-      {/* 添加连接点可视化 */}
+      {/* 添加连接点可视化和点击事件 */}
       {type !== 'connector' && [
         [size[0] / 2 + 0.1, 0, 0],
         [-size[0] / 2 - 0.1, 0, 0],
@@ -67,9 +64,17 @@ const FurnitureModule = ({ id, type, position, rotation, material, isSelected, o
         [0, 0, size[2] / 2 + 0.1],
         [0, 0, -size[2] / 2 - 0.1]
       ].map((pos, index) => (
-        <mesh key={index} position={pos}>
+        <mesh 
+          key={index} 
+          position={pos}
+          onClick={(e) => handleConnectionPointClick(e, connectionDirections[index])}
+        >
           <sphereGeometry args={[0.05]} />
-          <meshStandardMaterial color={isSelected ? '#FF0000' : '#00FF00'} />
+          <meshStandardMaterial 
+            color={isSelected ? '#FF0000' : '#00FF00'}
+            transparent
+            opacity={0.8}
+          />
         </mesh>
       ))}
     </group>

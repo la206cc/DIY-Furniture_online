@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ControlPanel = ({ onAddModule, currentMaterial, onMaterialChange, selectedModule, onRemoveModule }) => {
+const ControlPanel = ({ onAddModule, currentMaterial, onMaterialChange, selectedModule, onRemoveModule, selectedComponentType, onComponentTypeChange }) => {
   return (
     <div style={{
       width: '20%',
@@ -13,34 +13,28 @@ const ControlPanel = ({ onAddModule, currentMaterial, onMaterialChange, selected
     }}>
       <h2 style={{ margin: '0 0 20px 0' }}>家具配置器</h2>
       
-      {/* 模块添加区域 */}
+      {/* 组件类型选择 */}
       <div style={{ marginBottom: '20px' }}>
-        <h3>添加模块</h3>
+        <h3>选择组件类型</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <button
-            onClick={() => onAddModule('shelf', [0, 0, 0])}
-            style={buttonStyle}
-          >
-            添加搁板
-          </button>
-          <button
-            onClick={() => onAddModule('cabinet', [0, 0, 0])}
-            style={buttonStyle}
-          >
-            添加柜子
-          </button>
-          <button
-            onClick={() => onAddModule('connector', [0, 0, 0])}
-            style={buttonStyle}
-          >
-            添加连接件
-          </button>
-          <button
-            onClick={() => onAddModule('leg', [0, -0.5, 0])}
-            style={buttonStyle}
-          >
-            添加桌腿
-          </button>
+          {[
+            { type: 'shelf', label: '搁板' },
+            { type: 'cabinet', label: '柜子' },
+            { type: 'connector', label: '连接件' },
+            { type: 'leg', label: '桌腿' }
+          ].map(({ type, label }) => (
+            <button
+              key={type}
+              onClick={() => onComponentTypeChange(type)}
+              style={{
+                ...buttonStyle,
+                backgroundColor: selectedComponentType === type ? '#4CAF50' : '#fff',
+                color: selectedComponentType === type ? '#fff' : '#000'
+              }}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
       
@@ -85,11 +79,11 @@ const ControlPanel = ({ onAddModule, currentMaterial, onMaterialChange, selected
       <div style={{ marginTop: '30px', fontSize: '12px', color: '#666' }}>
         <h3>使用说明</h3>
         <ul style={{ paddingLeft: '20px' }}>
-          <li>点击3D场景中的模块进行选择</li>
+          <li>在左侧选择要添加的组件类型</li>
+          <li>点击3D场景中组件上的绿色连接点添加新组件</li>
           <li>使用鼠标拖拽旋转和缩放场景</li>
-          <li>通过控制面板添加新模块</li>
           <li>选择不同材质自定义模块外观</li>
-          <li>选中模块后可以删除</li>
+          <li>点击模块可以选中，然后删除</li>
         </ul>
       </div>
     </div>

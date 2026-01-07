@@ -5,9 +5,19 @@ import FurnitureModule from './FurnitureModule';
 import ControlPanel from './ControlPanel';
 
 const FurnitureConfigurator = () => {
-  const [modules, setModules] = useState([]);
+  // 初始状态：添加一个基础柜子组件
+  const [modules, setModules] = useState([
+    {
+      id: 1,
+      type: 'cabinet',
+      position: [0, 0, 0],
+      rotation: [0, 0, 0],
+      material: 'metal'
+    }
+  ]);
   const [selectedModule, setSelectedModule] = useState(null);
   const [currentMaterial, setCurrentMaterial] = useState('metal');
+  const [selectedComponentType, setSelectedComponentType] = useState('shelf');
 
   const addModule = (type, position) => {
     const newModule = {
@@ -28,6 +38,54 @@ const FurnitureConfigurator = () => {
 
   const removeModule = (id) => {
     setModules(modules.filter(module => module.id !== id));
+  };
+
+  // 3D空间中的连接点点击处理
+  const handleConnectionPointClick = (baseModuleId, direction) => {
+    const baseModule = modules.find(m => m.id === baseModuleId);
+    if (!baseModule) return;
+
+    // 根据基础模块和方向计算新模块的位置
+    const size = {
+      shelf: [1, 0.1, 1],
+      cabinet: [1, 1, 1],
+      connector: [0.2, 0.2, 0.2],
+      leg: [0.1, 1, 0.1]
+    }[baseModule.type] || [1, 1, 1];
+
+    let newPosition = [...baseModule.position];
+    const newModuleSize = {
+      shelf: [1, 0.1, 1],
+      cabinet: [1, 1, 1],
+      connector: [0.2, 0.2, 0.2],
+      leg: [0.1, 1, 0.1]
+    }[selectedComponentType] || [1, 1, 1];
+
+    // 根据方向计算新位置
+    switch (direction) {
+      case 'right':
+        newPosition[0] = baseModule.position[0] + size[0] / 2 + newModuleSize[0] / 2;
+        break;
+      case 'left':
+        newPosition[0] = baseModule.position[0] - size[0] / 2 - newModuleSize[0] / 2;
+        break;
+      case 'top':
+        newPosition[1] = baseModule.position[1] + size[1] / 2 + newModuleSize[1] / 2;
+        break;
+      case 'bottom':
+        newPosition[1] = baseModule.position[1] - size[1] / 2 - newModuleSize[1] / 2;
+        break;
+      case 'front':
+        newPosition[2] = baseModule.position[2] + size[2] / 2 + newModuleSize[2] / 2;
+        break;
+      case 'back':
+        newPosition[2] = baseModule.position[2] - size[2] / 2 - newModuleSize[2] / 2;
+        break;
+      default:
+        return;
+    }
+
+    addModule(selectedComponentType, newPosition);
   };
 
   return (
@@ -53,6 +111,7 @@ const FurnitureConfigurator = () => {
               onSelect={() => setSelectedModule(module.id)}
               onUpdate={updates => updateModule(module.id, updates)}
               onRemove={() => removeModule(module.id)}
+              onConnectionPointClick={(direction) => handleConnectionPointClick(module.id, direction)}
             />
           ))}
         </Canvas>
@@ -63,6 +122,8 @@ const FurnitureConfigurator = () => {
         onMaterialChange={setCurrentMaterial}
         selectedModule={selectedModule}
         onRemoveModule={() => selectedModule && removeModule(selectedModule)}
+        selectedComponentType={selectedComponentType}
+        onComponentTypeChange={setSelectedComponentType}
       />
     </div>
   );
