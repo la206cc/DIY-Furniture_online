@@ -35,9 +35,7 @@ const ControlPanel = ({ onAddModule, currentMaterial, onMaterialChange, selected
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {[
             { type: 'shelf', label: '搁板' },
-            { type: 'cabinet', label: '柜子' },
-            { type: 'connector', label: '连接件' },
-            { type: 'leg', label: '桌腿' }
+            { type: 'cabinet', label: '柜子' }
           ].map(({ type, label }) => (
             <button
               key={type}

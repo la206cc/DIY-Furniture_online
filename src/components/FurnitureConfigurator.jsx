@@ -87,17 +87,13 @@ const FurnitureConfigurator = () => {
     // 根据基础模块和方向计算新模块的位置
     const size = {
       shelf: [1, 0.1, 1],
-      cabinet: [1, 1, 1],
-      connector: [0.2, 0.2, 0.2],
-      leg: [0.1, 1, 0.1]
+      cabinet: [1, 1, 1]
     }[baseModule.type] || [1, 1, 1];
 
     let newPosition = [...baseModule.position];
     const newModuleSize = {
       shelf: [1, 0.1, 1],
-      cabinet: [1, 1, 1],
-      connector: [0.2, 0.2, 0.2],
-      leg: [0.1, 1, 0.1]
+      cabinet: [1, 1, 1]
     }[selectedComponentType] || [1, 1, 1];
 
     // 根据方向计算新位置

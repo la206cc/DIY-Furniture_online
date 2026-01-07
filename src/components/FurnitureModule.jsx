@@ -13,9 +13,7 @@ const FurnitureModule = ({ id, type, position, rotation, material, isSelected, o
   // 模块尺寸配置
   const moduleSizes = {
     shelf: [1, 0.1, 1],
-    cabinet: [1, 1, 1],
-    connector: [0.2, 0.2, 0.2],
-    leg: [0.1, 1, 0.1]
+    cabinet: [1, 1, 1]
   };
 
   const size = moduleSizes[type] || [1, 1, 1];
