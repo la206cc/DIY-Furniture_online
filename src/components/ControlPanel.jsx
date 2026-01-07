@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ControlPanel = ({ onAddModule, currentMaterial, onMaterialChange, selectedModule, onRemoveModule, selectedComponentType, onComponentTypeChange }) => {
+const ControlPanel = ({ onAddModule, currentMaterial, onMaterialChange, selectedModule, onRemoveModule, selectedComponentType, onComponentTypeChange, onReset }) => {
   return (
     <div style={{
       width: '20%',
@@ -12,6 +12,22 @@ const ControlPanel = ({ onAddModule, currentMaterial, onMaterialChange, selected
       borderLeft: '1px solid #ddd'
     }}>
       <h2 style={{ margin: '0 0 20px 0' }}>家具配置器</h2>
+      
+      {/* 一键恢复按钮 */}
+      <div style={{ marginBottom: '20px' }}>
+        <button
+          onClick={onReset}
+          style={{
+            ...buttonStyle,
+            backgroundColor: '#2196F3',
+            color: '#fff',
+            fontSize: '16px',
+            fontWeight: 'bold'
+          }}
+        >
+          一键恢复到初始状态
+        </button>
+      </div>
       
       {/* 组件类型选择 */}
       <div style={{ marginBottom: '20px' }}>

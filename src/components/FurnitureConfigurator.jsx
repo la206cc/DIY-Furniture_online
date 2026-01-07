@@ -4,17 +4,20 @@ import { OrbitControls, PerspectiveCamera, Grid, Sky } from '@react-three/drei';
 import FurnitureModule from './FurnitureModule';
 import ControlPanel from './ControlPanel';
 
+// 定义初始状态
+const initialModules = [
+  {
+    id: 1,
+    type: 'cabinet',
+    position: [0, 0, 0],
+    rotation: [0, 0, 0],
+    material: 'metal'
+  }
+];
+
 const FurnitureConfigurator = () => {
   // 初始状态：添加一个基础柜子组件
-  const [modules, setModules] = useState([
-    {
-      id: 1,
-      type: 'cabinet',
-      position: [0, 0, 0],
-      rotation: [0, 0, 0],
-      material: 'metal'
-    }
-  ]);
+  const [modules, setModules] = useState(initialModules);
   const [selectedModule, setSelectedModule] = useState(null);
   const [currentMaterial, setCurrentMaterial] = useState('metal');
   const [selectedComponentType, setSelectedComponentType] = useState('shelf');
@@ -38,6 +41,12 @@ const FurnitureConfigurator = () => {
 
   const removeModule = (id) => {
     setModules(modules.filter(module => module.id !== id));
+  };
+
+  // 恢复到初始状态
+  const resetToInitialState = () => {
+    setModules(initialModules);
+    setSelectedModule(null);
   };
 
   // 3D空间中的连接点点击处理
@@ -124,6 +133,7 @@ const FurnitureConfigurator = () => {
         onRemoveModule={() => selectedModule && removeModule(selectedModule)}
         selectedComponentType={selectedComponentType}
         onComponentTypeChange={setSelectedComponentType}
+        onReset={resetToInitialState}
       />
     </div>
   );
