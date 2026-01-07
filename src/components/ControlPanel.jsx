@@ -1,6 +1,15 @@
 import React from 'react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 
 const ControlPanel = ({ onAddModule, currentMaterial, onMaterialChange, selectedModule, onRemoveModule, selectedComponentType, onComponentTypeChange, onReset }) => {
+  // 材质颜色配置
+  const materialColors = {
+    metal: '#C0C0C0',
+    wood: '#8B4513',
+    plastic: '#4682B4'
+  };
+
   return (
     <div style={{
       width: '20%',
@@ -12,6 +21,27 @@ const ControlPanel = ({ onAddModule, currentMaterial, onMaterialChange, selected
       borderLeft: '1px solid #ddd'
     }}>
       <h2 style={{ margin: '0 0 20px 0' }}>家具配置器</h2>
+      
+      {/* 柜子预览模型 */}
+      <div style={{ 
+        marginBottom: '20px',
+        height: '150px',
+        backgroundColor: '#fff',
+        borderRadius: '8px',
+        overflow: 'hidden',
+        border: '1px solid #ddd'
+      }}>
+        <Canvas>
+          <PerspectiveCamera makeDefault position={[2, 2, 2]} />
+          <OrbitControls enableZoom={false} enablePan={false} />
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[5, 5, 5]} intensity={1} />
+          <mesh rotation={[0.5, 0.5, 0]}>
+            <boxGeometry args={[1, 1, 1]} />
+            <meshStandardMaterial color={materialColors[currentMaterial]} />
+          </mesh>
+        </Canvas>
+      </div>
       
       {/* 一键恢复按钮 */}
       <div style={{ marginBottom: '20px' }}>
