@@ -62,10 +62,10 @@ const FurnitureModule = ({ id, type, position, rotation, material, isSelected, o
       >
         <boxGeometry args={size} />
       </mesh>
-      {/* 控制点中间的box */}
+      {/* 控制点中间的box - 尺寸随柜子变化 */}
       <mesh>
-        <boxGeometry args={[0.5, 0.5, 0.5]} />
-        <meshStandardMaterial color="#666666" />
+        <boxGeometry args={[size[0] * 0.5, size[1] * 0.5, size[2] * 0.5]} />
+        <meshStandardMaterial color="#888888" metalness={0.6} roughness={0.4} />
       </mesh>
       {/* 添加连接点可视化和点击事件 */}
       {type !== 'connector' && [
