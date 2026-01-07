@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-const FurnitureModule = ({ id, type, position, rotation, material, isSelected, onSelect, onUpdate, onRemove, onConnectionPointClick }) => {
+const FurnitureModule = ({ id, type, position, rotation, material, isSelected, onSelect, onUpdate, onRemove, onConnectionPointClick, isDragging }) => {
   const ref = useRef();
 
   // 材质配置
@@ -28,11 +28,13 @@ const FurnitureModule = ({ id, type, position, rotation, material, isSelected, o
 
   // 鼠标交互
   const handleClick = (e) => {
+    if (isDragging) return;
     e.stopPropagation();
     onSelect();
   };
 
   const handleConnectionPointClick = (e, direction) => {
+    if (isDragging) return;
     e.stopPropagation();
     onConnectionPointClick(direction);
   };

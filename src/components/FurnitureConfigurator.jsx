@@ -21,6 +21,27 @@ const FurnitureConfigurator = () => {
   const [selectedModule, setSelectedModule] = useState(null);
   const [currentMaterial, setCurrentMaterial] = useState('metal');
   const [selectedComponentType, setSelectedComponentType] = useState('shelf');
+  // 用于区分点击和拖动的状态
+  const [isDragging, setIsDragging] = useState(false);
+  const [mouseStart, setMouseStart] = useState({ x: 0, y: 0 });
+
+  // 处理鼠标按下事件
+  const handleMouseDown = (e) => {
+    setMouseStart({ x: e.clientX, y: e.clientY });
+    setIsDragging(false);
+  };
+
+  // 处理鼠标移动事件
+  const handleMouseMove = (e) => {
+    if (isDragging) return;
+    
+    const deltaX = Math.abs(e.clientX - mouseStart.x);
+    const deltaY = Math.abs(e.clientY - mouseStart.y);
+    // 如果鼠标移动超过5像素，视为拖动
+    if (deltaX > 5 || deltaY > 5) {
+      setIsDragging(true);
+    }
+  };
 
   const addModule = (type, position) => {
     const newModule = {
@@ -51,11 +72,15 @@ const FurnitureConfigurator = () => {
 
   // 取消物体选择
   const handleDeselect = () => {
-    setSelectedModule(null);
+    if (!isDragging) {
+      setSelectedModule(null);
+    }
   };
 
   // 3D空间中的连接点点击处理
   const handleConnectionPointClick = (baseModuleId, direction) => {
+    if (isDragging) return;
+    
     const baseModule = modules.find(m => m.id === baseModuleId);
     if (!baseModule) return;
 
@@ -104,7 +129,11 @@ const FurnitureConfigurator = () => {
 
   return (
     <div style={{ width: '100vw', height: '100vh', display: 'flex' }}>
-      <div style={{ width: '80%', height: '100%' }}>
+      <div 
+        style={{ width: '80%', height: '100%' }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+      >
         <Canvas shadows>
           <PerspectiveCamera makeDefault position={[5, 5, 5]} />
           <OrbitControls enablePan enableZoom enableRotate />
@@ -137,10 +166,11 @@ const FurnitureConfigurator = () => {
               rotation={module.rotation}
               material={module.material}
               isSelected={selectedModule === module.id}
-              onSelect={() => setSelectedModule(module.id)}
+              onSelect={() => !isDragging && setSelectedModule(module.id)}
               onUpdate={updates => updateModule(module.id, updates)}
               onRemove={() => removeModule(module.id)}
               onConnectionPointClick={(direction) => handleConnectionPointClick(module.id, direction)}
+              isDragging={isDragging}
             />
           ))}
         </Canvas>
